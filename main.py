@@ -4,6 +4,9 @@ from settings import *
 from sprites import *
 from os import path
 
+
+
+#hey this is me
 class Game:
 	def __init__(self):
 		pygame.init()
@@ -44,7 +47,7 @@ class Game:
 		pygame.display.flip()
 
 	def show_start_screen(self):
-		pass
+		print("Hello")
 
 	def show_GO_screen(self):
 		print('GAME OVER')
