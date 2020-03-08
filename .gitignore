@@ -1,3 +1,5 @@
 .vscode
 *.pyc
 *.pyo
+__pycache__
+*.md
