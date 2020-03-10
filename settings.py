@@ -1,7 +1,7 @@
 #Configuration for game
 TITLE = "Darkness is Lit"
-HEIGHT = 800
-WIDTH = 1280
+HEIGHT = 400
+WIDTH = 600
 FPS = 60
 
 
@@ -17,6 +17,17 @@ BGCOLOR = BLUE
 
 #SINGLE IMAGES
 IMAGES = {
-    'player' : 'manBlue_gun.png'
-}
+    'player' : 'manBlue_gun.png',
 
+}
+#SPRITESHEET
+SPRITESHEETS = {
+    'wizardIdle' : 'Idle.png',
+    'wizardDeath' : 'Death.png',
+    'wizardFall' : 'Fall.png',
+    'wizardRun' : 'Run.png',
+    'wizardJump' : 'Jump.png',
+    'wizardHit' : 'Hit.png',
+    'wizardA1' : 'Attack1.png',
+    'wizardA2' : 'Attack2.png',
+}
