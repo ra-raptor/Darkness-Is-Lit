@@ -24,3 +24,44 @@ def LoadResourceFromFile(folder,file,type='image'):
     if type == "font":
         return pathToFile
 
+def Animation(object,frames):
+    now = pygame.time.get_ticks()
+    if now - object.last_updated > 100:
+        object.last_updated = now
+        object.current_frame = (object.current_frame+1) % len(frames)
+        center = object.rect.center
+        object.image = frames[object.current_frame]
+        object.image.set_colorkey(BLACK)
+        object.rect = object.image.get_rect()
+        object.rect.center = center
+
+def Text(surface,text,font,size,colour,x,y,align='tl'):
+    font = pygame.font.Font(font,size)
+    text_surface = font.render(text,True,colour)
+    text_rect = text_surface.get_rect()
+    if align == 'tl':
+        text_rect.topleft = (x,y)
+    if align == 'tr':
+        text_rect.topright = (x,y)
+    if align == 'bl':
+        text_rect.bottomleft = (x,y)
+    if align == 'br':
+        text_rect.bottomright = (x,y)
+    if align == 'mt':
+        text_rect.midtop = (x,y)
+    if align == 'mb':
+        text_rect.midbottom = (x,y)
+    if align == 'ml':
+        text_rect.midleft = (x,y)
+    if align == 'mr':
+        text_rect.midright = (x,y)
+    if align == 'c':
+        text_rect.center = (x,y)
+    surface.blit(text_surface,text_rect)
+
+def FlipImage(set):
+    flipped = []
+    for i in set:
+        Img = pygame.transform.flip(i,True,False)
+        flipped.append(Img)
+    return flipped

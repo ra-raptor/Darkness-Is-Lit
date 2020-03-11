@@ -10,11 +10,13 @@ class Game:
 	def __init__(self):
 		pygame.init() #initiating pygame
 		pygame.mixer.init() #initiating pygame music
-		self.screen = pygame.display.set_mode((WIDTH,HEIGHT)) #width,height defined in settings file
+		self.MonitorDimentions = [pygame.display.Info().current_w,pygame.display.Info().current_h]
+		self.screen = pygame.display.set_mode((WIDTH,HEIGHT),pygame.RESIZABLE) #width,height defined in settings file
 		pygame.display.set_caption(TITLE) #Title from settings file
 		self.clock = pygame.time.Clock() #game clock
 		self.isRunning = True #is the main game loop running?
 		self.isPaused = False #is the game paused?
+		self.isFullScreen = False #is the window Fullscreen?
 		self.loadData() #function to load data
 
 	def loadData(self):
@@ -27,6 +29,23 @@ class Game:
 		''' images '''
 		self.playerImg = LoadResourceFromFile(self.temp_folder,IMAGES['player'],'image')
 		#self.wizardImg = Spritesheet(self.temp_folder,SPRITESHEETS['wizardIdle'],(1,6)).extractImg((1,5))
+		self.WizardIdle = [Spritesheet(self.wizard_folder,SPRITESHEETS['wizardIdle'],(1,6)).extractImg((1,i)) for i in range(1,7)]
+		self.WizardDeath = [Spritesheet(self.wizard_folder,SPRITESHEETS['wizardDeath'],(1,7)).extractImg((1,i)) for i in range(1,8)]
+		self.WizardRun = [Spritesheet(self.wizard_folder,SPRITESHEETS['wizardRun'],(1,8)).extractImg((1,i)) for i in range(1,9)]
+		self.WizardJump = [Spritesheet(self.wizard_folder,SPRITESHEETS['wizardJump'],(1,2)).extractImg((1,i)) for i in range(1,3)]
+		self.WizardFall = [Spritesheet(self.wizard_folder,SPRITESHEETS['wizardFall'],(1,2)).extractImg((1,i)) for i in range(1,3)]
+		self.WizardHit = [Spritesheet(self.wizard_folder,SPRITESHEETS['wizardHit'],(1,4)).extractImg((1,i)) for i in range(1,5)]
+		self.WizardAttack1 = [Spritesheet(self.wizard_folder,SPRITESHEETS['wizardA1'],(1,8)).extractImg((1,i)) for i in range(1,9)]
+		self.WizardAttack2 = [Spritesheet(self.wizard_folder,SPRITESHEETS['wizardA2'],(1,8)).extractImg((1,i)) for i in range(1,9)]
+		self.WizardIdleFlipped = FlipImage(self.WizardIdle)
+		self.WizardDeathFlipped = FlipImage(self.WizardDeath)
+		self.WizardRunFlipped = FlipImage(self.WizardRun)
+		self.WizardJumpFlipped = FlipImage(self.WizardJump)
+		self.WizardFallFlipped = FlipImage(self.WizardFall)
+		self.WizardHitFlipped = FlipImage(self.WizardHit)
+		self.WizardAttack1Flipped = FlipImage(self.WizardAttack1)
+		self.WizardAttack2Flipped = FlipImage(self.WizardAttack2)
+		
 
 		''' fonts '''
 		self.testFont = pygame.font.match_font('Verdana', bold=False, italic=False)
@@ -59,17 +78,26 @@ class Game:
 				if self.playing:
 					self.playing = False
 				self.isRunning = False
+			if event.type == pygame.VIDEORESIZE: #handles resizing of pygame window
+				if not self.isFullScreen:
+					self.screen = pygame.display.set_mode((event.w,event.h),pygame.RESIZABLE) #sets screen size to new window size
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_ESCAPE:
 					self.isPaused = not self.isPaused
-				if event.key == pygame.K_SPACE:
-					self.player.isRunning = True
+				if event.key == pygame.K_F11:
+					self.isFullScreen = not self.isFullScreen
+					if self.isFullScreen:
+						self.screen = pygame.display.set_mode(self.MonitorDimentions,pygame.FULLSCREEN)
+					else:
+						self.screen = pygame.display.set_mode((self.screen.get_width(),self.screen.get_height()),pygame.RESIZABLE)
+
 
 	def draw(self):
 		self.screen.fill(WHITE)
 		self.all_sprites.draw(self.screen)
 		fpsTxt = "FPS-{:.2f}".format(self.clock.get_fps())
-		self.drawText(fpsTxt,self.testFont,18,BLACK,10,10,'tl')
+		#self.drawText(fpsTxt,self.testFont,18,BLACK,10,10,'tl')
+		Text(self.screen,fpsTxt,self.testFont,18,BLACK,10,10,'tl')
 		pygame.display.flip()
 
 	def show_start_screen(self):
@@ -77,33 +105,6 @@ class Game:
 
 	def show_GO_screen(self):
 		print('GAME OVER')
-
-	def waitForKey(self):
-		pass
-
-	def drawText(self,text,fontName,size,color,x,y,align='tl'):
-		font = pygame.font.Font(fontName,size)
-		text_surface = font.render(text,True,color)
-		text_rect = text_surface.get_rect()
-		if align == 'tl':
-			text_rect.topleft = (x,y)
-		if align == 'tr':
-			text_rect.topright = (x,y)
-		if align == 'bl':
-			text_rect.bottomleft = (x,y)
-		if align == 'br':
-			text_rect.bottomright = (x,y)
-		if align == 'mt':
-			text_rect.midtop = (x,y)
-		if align == 'mb':
-			text_rect.midbottom = (x,y)
-		if align == 'ml':
-			text_rect.midleft = (x,y)
-		if align == 'mr':
-			text_rect.midright = (x,y)
-		if align == 'c':
-			text_rect.center = (x,y)
-		self.screen.blit(text_surface,text_rect)
 
 #initiation section
 if( __name__ == "__main__"):
