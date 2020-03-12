@@ -44,7 +44,7 @@ class Game:
 		self.WizardFallFlipped = FlipImage(self.WizardFall)
 		self.WizardHitFlipped = FlipImage(self.WizardHit)
 		self.WizardAttack1Flipped = FlipImage(self.WizardAttack1)
-		self.WizardAttack2Flipped = FlipImage(self.WizardAttack2)
+		self.WizardAttack2Flipped = FlipImage(self.WizardAttack2) 
 		
 
 		''' fonts '''
@@ -91,7 +91,6 @@ class Game:
 					else:
 						self.screen = pygame.display.set_mode((self.screen.get_width(),self.screen.get_height()),pygame.RESIZABLE)
 
-
 	def draw(self):
 		self.screen.fill(WHITE)
 		self.all_sprites.draw(self.screen)
@@ -104,7 +103,7 @@ class Game:
 		pass
 
 	def show_GO_screen(self):
-		print('GAME OVER')
+		pass
 
 #initiation section
 if( __name__ == "__main__"):

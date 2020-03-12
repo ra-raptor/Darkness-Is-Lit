@@ -19,23 +19,25 @@ class Player(pygame.sprite.Sprite):
 		self.isAttackingPrimary = False
 		self.isAttackingRanged = False
 		self.flipX = False
+		self.isAnimationActive = False
 		''' image and rect '''
 		self.image = self.game.WizardIdle[self.current_frame ]
 		self.image.set_colorkey(BLACK)
 		self.rect = self.image.get_rect()
 		self.rect.center = (WIDTH/2,HEIGHT/2)
-
 		
-
-
 	def update(self):
 		keys = pygame.key.get_pressed()
 		if keys[pygame.K_f]:
-			self.isAttackingPrimary = True
-			self.current_frame =0
+			if not self.isAnimationActive:
+				self.isAnimationActive = True
+				self.isAttackingPrimary = True
+				self.current_frame =0
 		if keys[pygame.K_g]:
-			self.isAttackingRanged = True
-			self.current_frame =0
+			if not self.isAnimationActive:
+				self.isAnimationActive = True
+				self.isAttackingRanged = True
+				self.current_frame =0
 		if keys[pygame.K_LEFT]:
 			self.flipX = True
 			self.isRunning = True
@@ -50,6 +52,7 @@ class Player(pygame.sprite.Sprite):
 				Animation(self,self.game.WizardAttack1)
 			if self.current_frame >= len(self.game.WizardAttack1)-1:
 				self.isAttackingPrimary = False
+				self.isAnimationActive = False
 		elif self.isAttackingRanged:
 			if self.flipX:
 				Animation(self,self.game.WizardAttack2Flipped)
@@ -57,6 +60,7 @@ class Player(pygame.sprite.Sprite):
 				Animation(self,self.game.WizardAttack2)
 			if self.current_frame >= len(self.game.WizardAttack2)-1:
 				self.isAttackingRanged = False
+				self.isAnimationActive = False
 		if self.isRunning:
 			if self.flipX:
 				Animation(self,self.game.WizardRunFlipped)
@@ -68,6 +72,5 @@ class Player(pygame.sprite.Sprite):
 				Animation(self,self.game.WizardIdleFlipped)
 			else:
 				Animation(self,self.game.WizardIdle)
-
 		if self.flipX:
 			pass
