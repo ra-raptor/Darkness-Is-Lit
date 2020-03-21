@@ -65,3 +65,50 @@ def FlipImage(set):
         Img = pygame.transform.flip(i,True,False)
         flipped.append(Img)
     return flipped
+
+def collideHitRect(one,two):
+    return one.hit_rect.colliderect(two.rect)
+
+
+def collideWithWall(sprite,group,dir):
+        if dir == 'x':
+            hitsX = pygame.sprite.spritecollide(sprite, group, False,collideHitRect)
+            if hitsX:
+                if hitsX[0].rect.centerx > sprite.hit_rect.centerx:
+                    sprite.position.x  = hitsX[0].rect.left - int(sprite.hit_rect.width/2)
+                if hitsX[0].rect.centerx < sprite.hit_rect.centerx:
+                    sprite.position.x  = hitsX[0].rect.right + int(sprite.hit_rect.width/2)
+                sprite.velocity.x = 0
+                sprite.hit_rect.centerx  = sprite.position.x
+
+        if dir == 'y':
+            hitsY = pygame.sprite.spritecollide(sprite, group, False,collideHitRect)
+            if hitsY:
+                if hitsY[0].rect.centery > sprite.hit_rect.centery:
+                    sprite.position.y  = hitsY[0].rect.top - int(sprite.hit_rect.height/2)
+                if hitsY[0].rect.centery < sprite.hit_rect.centery:
+                    sprite.position.y  = hitsY[0].rect.bottom + int(sprite.hit_rect.height/2)
+                sprite.velocity.y = 0
+                sprite.hit_rect.centery  = sprite.position.y
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
